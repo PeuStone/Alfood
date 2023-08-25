@@ -12,6 +12,7 @@ const ListaRestaurantes = () => {
   const [proximaPagina, setProximaPagina] = useState('');
   const [paginaAnterior, setPaginaAnterior] = useState('');
   const [busca, setBusca] = useState('');
+  const [ordenacao, setOrdenacao] = useState("");
 
   useEffect(() => {
     axios.get<IPaginacao<IRestaurante>>("http://localhost:8000/api/v1/restaurantes/")
@@ -47,23 +48,61 @@ const ListaRestaurantes = () => {
     if (busca) {
       opcoes.params.search = busca
     }
+    if (ordenacao) {
+      opcoes.params.ordering = ordenacao
+    }
     dadosRestaurantes('http://localhost:8000/api/v1/restaurantes/', opcoes)
   }
 
-  return (<section className={style.ListaRestaurantes}>
-    <h1>Os restaurantes mais <em>bacanas</em>!</h1>
-    <form onSubmit={Buscador}>
-      <input type='text' value={busca} onChange={evento => setBusca(evento.target.value)} />
-      <button type='submit' >buscar</button>
-    </form>
-    {restaurantes?.map(item => <Restaurante restaurante={item} key={item.id} />)}
-    {<button onClick={() => dadosRestaurantes(paginaAnterior)} disabled={!paginaAnterior}>
-      Página Anterior
-    </button>}
-    {<button onClick={() => dadosRestaurantes(proximaPagina)} disabled={!proximaPagina}>
-      Próxima Pagina
-    </button>}
-  </section>)
+  return (
+    <section className={style.ListaRestaurantes}>
+      <h1>Os restaurantes mais <em>bacanas</em>!</h1>
+      <form onSubmit={Buscador} className={style.Formulario}>
+        <div className={style.Filtros}>
+          <input
+            type='text'
+            placeholder='Digite aqui o nome do restaurante que deseja filtrar'
+            value={busca}
+            onChange={evento => setBusca(evento.target.value)}
+            className={style.pesquisa}
+          />
+        </div>
+        <div className={style.Filtros}>
+          <label
+            htmlFor='select-ordenacao'
+            className={style.FiltrosLabel}
+          >
+            Ordenação:
+          </label>
+          <select
+            name='select-ordenacao'
+            id='select-ordenacao'
+            value={ordenacao}
+            onChange={evento => setOrdenacao(evento.target.value)}
+          >
+            <option value=''>Padrão</option>
+            <option value='id'>Por Id</option>
+            <option value='nome'>Por Nome</option>
+          </select>
+        </div>
+        <div className={style.Filtros}>
+          <button
+            type='submit'
+            className={style.FiltrosBotao}
+          >
+            Buscar
+          </button>
+        </div>
+      </form>
+      {restaurantes?.map(item => <Restaurante restaurante={item} key={item.id} />)}
+      {<button onClick={() => dadosRestaurantes(paginaAnterior)} disabled={!paginaAnterior}>
+        Página Anterior
+      </button>}
+      {<button onClick={() => dadosRestaurantes(proximaPagina)} disabled={!proximaPagina}>
+        Próxima Pagina
+      </button>}
+    </section>
+  )
 }
 
 export default ListaRestaurantes

@@ -1,4 +1,25 @@
 .ListaRestaurantes {
   margin-top: 1.5rem;
   padding: 2rem;
+
+  .Formulario {
+    padding: 1em;
+  }
+
+  .Filtros {
+    margin-bottom: 0.5em;
+  }
+
+  .pesquisa {
+    width: 30%;
+    padding: 0.3em 0;
+  }
+
+  .FiltrosLabel {
+    padding-right: 1em;
+  }
+
+  .FiltrosBotao {
+    padding: 0.3em;
+  }
 }
