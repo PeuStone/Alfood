@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material"
+import { Box, Button, TextField, Typography } from "@mui/material"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ const FormularioRestaurante = () => {
     const parametros = useParams()
 
     useEffect(() => {
-        if(parametros.id){
+        if (parametros.id) {
             axios.get(`http://localhost:8000/api/v2/restaurantes/${parametros.id}/`)
                 .then(resposta => setNomeRestaurante(resposta.data.nome))
         }
@@ -35,17 +35,23 @@ const FormularioRestaurante = () => {
                 })
         }
 
-      
     }
 
     return (
-        <form onSubmit={aoSubmitForm}>
-            <TextField value={nomeRestaurante}
-                onChange={evento => setNomeRestaurante(evento.target.value)}
-                label="Nome do Restaurante"
-                variant="standard" />
-            <Button type="submit" variant="outlined">Salvar</Button>
-        </form>
+        <Box sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
+            <Typography component="h1" variant="h6">Formulário de Restaurantes</Typography>
+            <Box component='form' onSubmit={aoSubmitForm}>
+                <TextField
+                    value={nomeRestaurante}
+                    onChange={evento => setNomeRestaurante(evento.target.value)}
+                    label="Nome do Restaurante"
+                    variant="standard"
+                    fullWidth
+                    required
+                />
+                <Button sx={{ marginTop: 1 }} type="submit" fullWidth variant="outlined">Salvar</Button>
+            </Box>
+        </Box>
     )
 
 }
